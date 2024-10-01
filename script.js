@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const { data, error } = await _supabase
             .from('content')
             .select('*')
-            .single(); // Assuming there's only one row
+           // .single(); // Assuming there's only one row
 
         if (error) {
             console.error('Error fetching content:', error.message);
