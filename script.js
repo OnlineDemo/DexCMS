@@ -2,10 +2,12 @@
 document.addEventListener('DOMContentLoaded', () => {
    const { createClient } = supabase; // Access the createClient function
     // Initialize Supabase client
-    const supabaseUrl = 'https://ymcuabrefvksznctfbgb.supabase.co'; // Replace with your Supabase project URL
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltY3VhYnJlZnZrc3puY3RmYmdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjc3NDcwOTEsImV4cCI6MjA0MzMyMzA5MX0.HsrJPvI8mewVjz9KJUxCB9MxHoNTJsxfychhOznAImk'; // Replace with your Supabase API key
-    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-  console.log('Supabase Instance: ', _supabase)
+    // const supabaseUrl = 'https://ymcuabrefvksznctfbgb.supabase.co'; // Replace with your Supabase project URL
+    // const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltY3VhYnJlZnZrc3puY3RmYmdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjc3NDcwOTEsImV4cCI6MjA0MzMyMzA5MX0.HsrJPvI8mewVjz9KJUxCB9MxHoNTJsxfychhOznAImk'; // Replace with your Supabase API key
+    // const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+     const _supabase = createClient('https://ymcuabrefvksznctfbgb.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltY3VhYnJlZnZrc3puY3RmYmdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjc3NDcwOTEsImV4cCI6MjA0MzMyMzA5MX0.HsrJPvI8mewVjz9KJUxCB9MxHoNTJsxfychhOznAImk')
+     console.log('Supabase Instance: ', _supabase)
 
     // Fetch content from Supabase
     async function fetchContent() {
