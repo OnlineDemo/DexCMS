@@ -57,8 +57,8 @@
     import { gebi } from './utils.js'
     import { supabase, user, signOut, checkUser } from './supabase-utils.js'
 
-    // checks for valid session
-    checkUser();
+    // // checks for valid session
+    // checkUser();
 
 
 
@@ -96,6 +96,10 @@
             }
         });
     }
+
+    // checks for valid session
+    checkUser();
+  
 /*
     In this example, the code tries to list all of the
     records for the clients table. You may make any
