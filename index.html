@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editable Website</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1 id="title">Welcome to My Editable Website</h1>
+        <p id="description">This is a description that you can edit later.</p>
+        <img id="image" src="default.jpg" alt="Default Image" width="300px">
+
+        <div class="controls">
+            <button id="editBtn">Edit</button>
+            <button id="saveBtn" disabled>Save</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
