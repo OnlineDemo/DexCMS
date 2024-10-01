@@ -77,7 +77,25 @@
             document.getElementById('image').src = data.image_url;
         }
     }
+
   
+   // Function to enable editing
+    function enableEditing() {
+        // Make title and description content editable
+        document.getElementById('title').contentEditable = true;
+        document.getElementById('description').contentEditable = true;
+
+        // Enable the Save button
+        document.getElementById('saveBtn').disabled = false;
+
+        // Allow user to select an image
+        document.getElementById('image').addEventListener('click', () => {
+            const newImageUrl = prompt('Enter the new image URL:');
+            if (newImageUrl) {
+                document.getElementById('image').src = newImageUrl;
+            }
+        });
+    }
 /*
     In this example, the code tries to list all of the
     records for the clients table. You may make any
