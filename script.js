@@ -49,6 +49,23 @@ document.addEventListener('DOMContentLoaded', () => {
 //         }
 //     }
 
+//    // Function to sign in an existing user with email and password
+// export async function signInWithEmail(email, password) {
+//     const { data, error }  = await _supabase.auth.signInWithPassword({
+//       email,
+//       password,
+//     });
+  
+//     if (error) {
+//       console.error('Error signing in:', error.message);
+//     } else {
+//       console.log('User signed in:', data);
+//       alert('Logged in successfully!');
+//       fetchContent(); // Fetch content after successful login
+//       enableEditing(); // Call to enable editing
+//     }
+// }
+
    // Function to sign in an existing user with email and password
 export async function signInWithEmail(email, password) {
     const { data, error }  = await _supabase.auth.signInWithPassword({
@@ -60,11 +77,11 @@ export async function signInWithEmail(email, password) {
       console.error('Error signing in:', error.message);
     } else {
       console.log('User signed in:', data);
-      alert('Logged in successfully!');
-      fetchContent(); // Fetch content after successful login
-      enableEditing(); // Call to enable editing
+      window.location.href = 'listing.html'
     }
 }
+
+   
 
     // Function to enable editing
     function enableEditing() {
