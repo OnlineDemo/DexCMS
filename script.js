@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
      const _supabase = createClient('https://ymcuabrefvksznctfbgb.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltY3VhYnJlZnZrc3puY3RmYmdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjc3NDcwOTEsImV4cCI6MjA0MzMyMzA5MX0.HsrJPvI8mewVjz9KJUxCB9MxHoNTJsxfychhOznAImk')
      console.log('Supabase Instance: ', _supabase)
 
+   export const user = await _supabase.auth.getUser()
+
     // Fetch content from Supabase
     async function fetchContent() {
         const { data, error } = await _supabase
