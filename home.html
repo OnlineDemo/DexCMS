@@ -97,6 +97,30 @@
         });
     }
 
+      // Save the edited content back to Supabase
+    async function saveContent() {
+        const updatedTitle = document.getElementById('title').innerText;
+        const updatedDescription = document.getElementById('description').innerText;
+        const updatedImageUrl = document.getElementById('image').src;
+
+        const { data, error } = await _supabase
+            .from('content')
+            .update({
+                title: updatedTitle,
+                description: updatedDescription,
+                image_url: updatedImageUrl
+            })
+            .eq('id', 1); // Assuming the ID of the content row is 1
+
+        if (error) {
+            console.error('Error saving content:', error.message);
+            alert('Failed to save content: ' + error.message);
+        } else {
+            alert('Content saved successfully!');
+        }
+    }
+
+
     // checks for valid session
     checkUser();
    fetchContent(); // Fetch content after successful login
@@ -135,8 +159,8 @@
     });
 
     // for signout button
-    gebi('signout-button').addEventListener('click', function(){
-        signOut()
+    gebi('saveBtn').addEventListener('click', function(){
+       saveContent();
     })
 
 </script>
