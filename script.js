@@ -109,7 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('editBtn').addEventListener('click', () => {
         const email = prompt('Enter your email:');
         const password = prompt('Enter your password:');
-        login(email, password);
+        // login(email, password);
+       signInWithEmail(email, password);
     });
 
     document.getElementById('saveBtn').addEventListener('click', () => {
