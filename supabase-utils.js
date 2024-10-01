@@ -9,12 +9,7 @@ export const user = await supabase.auth.getUser()
 export function checkUser() {
     if (user.error != null ) {
         window.location.href = 'login.html'
-    } else {
-      // console.log('User signed in:', data);
-      // alert('Logged in successfully!');
-      fetchContent(); // Fetch content after successful login
-      enableEditing(); // Call to enable editing
-    }
+    } 
 }
 
 // Function to sign up a new user with email and password
