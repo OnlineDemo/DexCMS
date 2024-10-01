@@ -60,7 +60,9 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error('Error signing in:', error.message);
     } else {
       console.log('User signed in:', data);
-      window.location.href = 'listing.html'
+      alert('Logged in successfully!');
+      fetchContent(); // Fetch content after successful login
+      enableEditing(); // Call to enable editing
     }
 }
 
