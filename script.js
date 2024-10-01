@@ -1,3 +1,4 @@
+import createClient from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 // Wait for the DOM to fully load before initializing Supabase
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize Supabase client
