@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
    
    const supabaseUrl = ' https://ymcuabrefvksznctfbgb.supabase.co '
    const supabaseKey = ' eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltY3VhYnJlZnZrc3puY3RmYmdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjc3NDcwOTEsImV4cCI6MjA0MzMyMzA5MX0.HsrJPvI8mewVjz9KJUxCB9MxHoNTJsxfychhOznAImk '
-   export const _supabase = createClient(supabaseUrl, supabaseKey)
+    const _supabase = createClient(supabaseUrl, supabaseKey)
    //  export const user = await _supabase.auth.getUser()
 
     // Fetch content from Supabase
