@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch content from Supabase
     async function fetchContent() {
-        const { data, error } = await supabase
+        const { data, error } = await _supabase
             .from('content')
             .select('*')
             .single(); // Assuming there's only one row
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to log in a user
     async function login(email, password) {
         console.log('Attempting to log in with', email, password); // Debug log
-        const { user, error } = await supabase.auth.signIn({
+        const { user, error } = await _supabase.auth.signIn({
             email: email,
             password: password
         });
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const updatedDescription = document.getElementById('description').innerText;
         const updatedImageUrl = document.getElementById('image').src;
 
-        const { data, error } = await supabase
+        const { data, error } = await _supabase
             .from('content')
             .update({
                 title: updatedTitle,
