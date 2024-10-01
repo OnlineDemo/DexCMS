@@ -25,29 +25,44 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Function to log in a user
-    async function login(email, password) {
-        console.log('Attempting to log in with', email, password); // Debug log
-       const { data, error } = await _supabase.auth.signInWithPassword({
-  email: 'example@email.com',
-  password: 'example-password',
-})
+//     // Function to log in a user
+//     async function login(email, password) {
+//         console.log('Attempting to log in with', email, password); // Debug log
+//        const { data, error } = await _supabase.auth.signInWithPassword({
+//   email: 'example@email.com',
+//   password: 'example-password',
+// })
        
-        // const { user, error } = await _supabase.auth.signIn({
-        //     email: email,
-        //     password: password
-        // });
+//         // const { user, error } = await _supabase.auth.signIn({
+//         //     email: email,
+//         //     password: password
+//         // });
 
-        if (error) {
-            console.error('Login failed:', error.message);
-            alert('Login failed: ' + error.message);
-        } else {
-            console.log('User logged in:', user);
-            alert('Logged in successfully!');
-            fetchContent(); // Fetch content after successful login
-            enableEditing(); // Call to enable editing
-        }
+//         if (error) {
+//             console.error('Login failed:', error.message);
+//             alert('Login failed: ' + error.message);
+//         } else {
+//             console.log('User logged in:', user);
+//             alert('Logged in successfully!');
+//             fetchContent(); // Fetch content after successful login
+//             enableEditing(); // Call to enable editing
+//         }
+//     }
+
+   // Function to sign in an existing user with email and password
+export async function signInWithEmail(email, password) {
+    const { data, error }  = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+  
+    if (error) {
+      console.error('Error signing in:', error.message);
+    } else {
+      console.log('User signed in:', data);
+      window.location.href = 'listing.html'
     }
+}
 
     // Function to enable editing
     function enableEditing() {
