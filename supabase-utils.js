@@ -37,7 +37,7 @@ export async function signInWithEmail(email, password) {
       console.error('Error signing in:', error.message);
     } else {
       console.log('User signed in:', data);
-      window.location.href = 'listing.html'
+      window.location.href = 'index.html'
     }
 }
   
