@@ -28,10 +28,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to log in a user
     async function login(email, password) {
         console.log('Attempting to log in with', email, password); // Debug log
-        const { user, error } = await _supabase.auth.signIn({
-            email: email,
-            password: password
-        });
+       const { data, error } = await _supabase.auth.signInWithPassword({
+  email: 'example@email.com',
+  password: 'example-password',
+})
+       
+        // const { user, error } = await _supabase.auth.signIn({
+        //     email: email,
+        //     password: password
+        // });
 
         if (error) {
             console.error('Login failed:', error.message);
