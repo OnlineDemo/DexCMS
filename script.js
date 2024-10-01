@@ -50,8 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
 //     }
 
    // Function to sign in an existing user with email and password
-export async function signInWithEmail(email, password) {
-    const { data, error }  = await supabase.auth.signInWithPassword({
+ async function signInWithEmail(email, password) {
+    const { data, error }  = await _supabase.auth.signInWithPassword({
       email,
       password,
     });
