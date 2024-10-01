@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Listing Ajax</title>
+        <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   </head>
   <body>
@@ -59,6 +60,24 @@
     // checks for valid session
     checkUser();
 
+
+
+  // Fetch content from Supabase
+    async function fetchContent() {
+        const { data, error } = await supabase
+            .from('content')
+            .select('*')
+           // .single(); // Assuming there's only one row
+
+        if (error) {
+            console.error('Error fetching contentx99:', error.message);
+        } else {
+            document.getElementById('title').innerText = data.title;
+            document.getElementById('description').innerText = data.description;
+            document.getElementById('image').src = data.image_url;
+        }
+    }
+  
 /*
     In this example, the code tries to list all of the
     records for the clients table. You may make any
