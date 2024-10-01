@@ -21,6 +21,7 @@ async function fetchContent() {
 
 // Function to log in a user
 async function login(email, password) {
+    console.log('Attempting to log in with', email, password); // Debug log
     const { user, error } = await supabase.auth.signIn({
         email: email,
         password: password
@@ -32,9 +33,8 @@ async function login(email, password) {
     } else {
         console.log('User logged in:', user);
         alert('Logged in successfully!');
-        // Fetch content after login
-        fetchContent();
-        enableEditing();
+        fetchContent(); // Fetch content after successful login
+        enableEditing(); // Call to enable editing
     }
 }
 
@@ -43,7 +43,7 @@ function enableEditing() {
     // Make title and description content editable
     document.getElementById('title').contentEditable = true;
     document.getElementById('description').contentEditable = true;
-    
+
     // Enable the Save button
     document.getElementById('saveBtn').disabled = false;
 
