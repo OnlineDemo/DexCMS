@@ -116,7 +116,11 @@
 
     // Update the HTML elements with the fetched data
     document.getElementById('title').innerText = contentx.title;
-    document.getElementById('description').innerText = contentx.description;
+    
+   // document.getElementById('description').innerText = contentx.description;
+    document.getElementById('description').innerHTML = contentx.description;
+ // quill.root.innerHTML = contentx.description;  // Optional: for pre-filling the editor
+    
     document.getElementById('image').src = contentx.image_url;
 }
 
