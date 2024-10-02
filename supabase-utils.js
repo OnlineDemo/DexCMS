@@ -8,7 +8,7 @@ export const user = await supabase.auth.getUser()
 // verifies loggedin user with session
 export function checkUser() {
     if (user.error != null ) {
-        window.location.href = 'login.html'
+        window.location.href = '/'
     } 
 }
 
