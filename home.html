@@ -101,7 +101,24 @@
 // Call the function to fetch and display the content
 getContentx();
 
-  
+
+  // Function to check if user is logged in
+async function checkAuthentication() {
+    const user = supabase.auth.user(); // Check if there's an authenticated user
+
+    if (user) {
+        // If a user is logged in, allow editing
+        console.log('User is logged in:', user.email);
+        enableEditing();
+    } else {
+        // If no user is logged in, disable editing and hide edit controls
+        console.log('No user logged in. Editing disabled.');
+        disableEditing();
+    }
+}
+
+checkAuthentication();
+
   
    // Function to enable editing
     function enableEditing() {
@@ -119,7 +136,19 @@ getContentx();
                 document.getElementById('image').src = newImageUrl;
             }
         });
+      // Show the Save button
+    document.getElementById('saveBtn').style.display = 'block';
     }
+
+  // Function to disable editing for non-authenticated users
+function disableEditing() {
+    // Disable content-editable features
+    document.getElementById('title').contentEditable = false;
+    document.getElementById('description').contentEditable = false;
+
+    // Hide the Save button
+    document.getElementById('saveBtn').style.display = 'none';
+}
 
       // Save the edited content back to Supabase
     async function saveContent() {
@@ -146,9 +175,9 @@ getContentx();
 
 
     // checks for valid session
-    checkUser();
+   // checkUser();
   // fetchContent(); // Fetch content after successful login
-      enableEditing(); // Call to enable editing
+    //  enableEditing(); // Call to enable editing
   
 /*
     In this example, the code tries to list all of the
