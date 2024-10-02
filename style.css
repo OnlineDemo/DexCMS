@@ -38,3 +38,6 @@ button:disabled {
 button:hover:enabled {
     background-color: #0056b3;
 }
+button#saveBtn {
+    display: none;
+}
