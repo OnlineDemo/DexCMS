@@ -135,28 +135,28 @@
     the RLS will reject all request.     
 */ 
 
-    let db_result = await supabase
-    .from('clients')
-    .select('*')
+    // let db_result = await supabase
+    // .from('content')
+    // .select('*')
 
-    let data = db_result.data
-    console.log( data )
+    // let data = db_result.data
+    // console.log( data )
 
-    // loop through the data and add them to the table
-    data.forEach(function(item){
-        let row = `
-            <tr id="row-${item.id}">
-                <td>${item.id}</td>
-                <td>${item.name}</td>
-                <td>${item.contact_person}</td>
-                <td>${item.address}</td>
-                <td>${item.email}</td>
-                <td><button class="btn btn-sm btn-secondary" id="edit-${item.id}">EDIT</td>
-            </tr>
-        `;
+    // // loop through the data and add them to the table
+    // data.forEach(function(item){
+    //     let row = `
+    //         <tr id="row-${item.id}">
+    //             <td>${item.id}</td>
+    //             <td>${item.name}</td>
+    //             <td>${item.contact_person}</td>
+    //             <td>${item.address}</td>
+    //             <td>${item.email}</td>
+    //             <td><button class="btn btn-sm btn-secondary" id="edit-${item.id}">EDIT</td>
+    //         </tr>
+    //     `;
 
-        gebi('listing-body').innerHTML += row;
-    });
+    //     gebi('listing-body').innerHTML += row;
+    // });
 
     // for signout button
     gebi('saveBtn').addEventListener('click', function(){
