@@ -137,11 +137,10 @@ let quill = null;
         placeholder: 'Edit the description...',
         modules: {
             toolbar: [
-                [{ 'header': [1, 2, false] }],
+                [{ 'header': [1, 2, 3, false] }],
                 ['bold', 'italic', 'underline'],
-                ['link', 'blockquote', 'code-block'],
+                ['image', 'link', 'blockquote'],
                 [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                [{ 'script': 'sub' }, { 'script': 'super' }],
                 ['clean']
             ]
         }
@@ -149,6 +148,7 @@ let quill = null;
 
         // Enable the Save button
         document.getElementById('saveBtn').disabled = false;
+    
 
         // Allow user to select an image
         document.getElementById('image').addEventListener('click', () => {
@@ -159,6 +159,8 @@ let quill = null;
         });
       // Show the Save button
     document.getElementById('saveBtn').style.display = 'inline-block';
+      // Hide the Quill editor container
+        document.getElementById('description').style.display = 'none';  
     }
 
   // Function to disable editing for non-authenticated users
@@ -174,6 +176,8 @@ function disableEditing() {
 
     // Hide the Save button
     document.getElementById('saveBtn').style.display = 'none';
+    // Hide the Quill editor container
+        document.getElementById('editor-container').style.display = 'none';  
 }
 
       // Save the edited content back to Supabase
