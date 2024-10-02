@@ -102,21 +102,23 @@
 getContentx();
 
 
-  // Function to check if user is logged in
+// Function to check if user is logged in
 async function checkAuthentication() {
-    const user = supabase.auth.user(); // Check if there's an authenticated user
+    const { data: { user }, error } = await supabase.auth.getUser(); // Correct method for Supabase v2
+
+    if (error) {
+        console.error('Error fetching authenticated user:', error);
+        return;
+    }
 
     if (user) {
-        // If a user is logged in, allow editing
         console.log('User is logged in:', user.email);
         enableEditing();
     } else {
-        // If no user is logged in, disable editing and hide edit controls
         console.log('No user logged in. Editing disabled.');
         disableEditing();
     }
 }
-
 checkAuthentication();
 
   
