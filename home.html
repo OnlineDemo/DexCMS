@@ -220,7 +220,7 @@ function disableEditing() {
         const fileName = `${Date.now()}_${file.name}`; // Create a unique name for the file
 
         const { data, error } = await supabase.storage
-            .from('images') // Make sure to use your Supabase storage bucket name
+            .from('dxcms_files') // Make sure to use your Supabase storage bucket name
             .upload(`public/${fileName}`, file); // Save the file in 'public' folder
 
         if (error) {
