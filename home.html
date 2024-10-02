@@ -103,7 +103,7 @@
         const updatedDescription = document.getElementById('description').innerText;
         const updatedImageUrl = document.getElementById('image').src;
 
-        const { data, error } = await _supabase
+        const { data, error } = await supabase
             .from('content')
             .update({
                 title: updatedTitle,
