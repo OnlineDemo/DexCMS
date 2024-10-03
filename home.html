@@ -205,13 +205,13 @@ function disableEditing() {
         document.getElementById('editor-container').style.display = 'none';  
 }
 
-      // Save the edited content back to Supabase
-    async function saveContent() {
-        const updatedTitle = document.getElementById('title').innerText;
-       // const updatedDescription = document.getElementById('description').innerText;
-          const updatedDescription = quill.root.innerHTML;  // Get the content from Quill editor
+  
+   // Save the edited content back to Supabase
+async function saveContent() {
+    const updatedTitle = document.getElementById('title').innerText;
+    const updatedDescription = quill.root.innerHTML; // Get the content from Quill editor
 
-       // Check if a new image file has been selected
+    // Check if a new image file has been selected
     let updatedImageUrl = document.getElementById('image').src;
 
     // If a file is selected, upload it to Supabase Storage
@@ -219,49 +219,47 @@ function disableEditing() {
         const file = window.selectedFile; // Retrieve the file stored globally
         const fileName = `${Date.now()}_${file.name}`; // Create a unique name for the file
 
-        const { data, error } = await supabase.storage
+        // Upload the file
+        const { data: uploadData, error: uploadError } = await supabase.storage
             .from('dxcms_files') // Make sure to use your Supabase storage bucket name
             .upload(`public/${fileName}`, file); // Save the file in 'public' folder
 
-        if (error) {
-            console.error('Error uploading image:', error);
+        if (uploadError) {
+            console.error('Error uploading image:', uploadError);
             return;
         }
 
-        // Get the image URL from Supabase
-       // Get the correct public URL using Supabase's getPublicUrl
-const { data, error } = supabase
-    .storage
-    .from('dxcms_files') // Replace with your actual bucket name
-    .getPublicUrl(`public/${fileName}`); // Assuming your folder is 'public' and fileName is correct
+        // Get the correct public URL using Supabase's getPublicUrl
+        const { data: publicData, error: publicError } = supabase
+            .storage
+            .from('dxcms_files') // Your bucket name
+            .getPublicUrl(`public/${fileName}`);
 
-if (error) {
-    console.error('Error getting public URL:', error);
-} else {
-    updatedImageUrl = data.publicUrl; // Use the proper public URL from Supabase
-}
-    }
-
-        // previous code // const updatedImageUrl = document.getElementById('image').src;
-
-      
-    // Save the new content/updated data to the Supabase database
-        const { data, error } = await supabase
-            .from('content')
-            .update({
-                title: updatedTitle,
-                description: updatedDescription,
-                image_url: updatedImageUrl
-            })
-            .eq('id', 1); // Assuming the ID of the content row is 1
-
-        if (error) {
-            console.error('Error saving content:', error.message);
-            alert('Failed to save content: ' + error.message);
+        if (publicError) {
+            console.error('Error getting public URL:', publicError);
         } else {
-            alert('Content saved successfully!');
+            updatedImageUrl = publicData.publicUrl; // Use the proper public URL from Supabase
         }
     }
+
+    // Update the content in your database or wherever necessary
+    // Example of saving updated data back to the database:
+    const { error: updateError } = await supabase
+        .from('content') // Your table name
+        .update({
+            title: updatedTitle,
+            description: updatedDescription,
+            image_url: updatedImageUrl
+        })
+        .eq('id', 1); // Assuming you're updating row with id = 1
+
+    if (updateError) {
+        console.error('Error updating content:', updateError);
+    } else {
+        console.log('Content updated successfully!');
+    }
+}
+
 
 
     // checks for valid session
