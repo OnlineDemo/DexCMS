@@ -229,7 +229,17 @@ function disableEditing() {
         }
 
         // Get the image URL from Supabase
-        updatedImageUrl = `${supabase.storageUrl}/dxcms_files/public/${fileName}`;
+       // Get the correct public URL using Supabase's getPublicUrl
+const { data, error } = supabase
+    .storage
+    .from('dxcms_files') // Replace with your actual bucket name
+    .getPublicUrl(`public/${fileName}`); // Assuming your folder is 'public' and fileName is correct
+
+if (error) {
+    console.error('Error getting public URL:', error);
+} else {
+    updatedImageUrl = data.publicUrl; // Use the proper public URL from Supabase
+}
     }
 
         // previous code // const updatedImageUrl = document.getElementById('image').src;
