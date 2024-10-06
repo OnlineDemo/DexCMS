@@ -62,7 +62,9 @@
 
   // Fetch content from Supabase
     async function fetchContent() {
-        const { data, error } = await supabase
+       // const { data, error } = await supabase
+          let { data: contentx, error } = await supabase
+
             .from('content')
             .select('*')
            // .single(); // Assuming there's only one row
