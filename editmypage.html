@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Listing Ajax</title>
+        <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="main-container">
+      <div class="controls">
+        <button id="editBtn">Edit</button>
+        <button id="saveBtn" style="display: inline-block;">Save</button>
+        <button class="btn btn-primary btn-sm pull-right" id="signout-button">Sign Out</button>
+      </div>
+      
+      <div class="top_contentbx">
+       <div id="mainbx" class="container">
+        <h1 id="title">Welcome</h1>
+        <p id="description">Hey there!</p>
+        <div id="editor-container"></div>
+        <img id="image" src="/images/image1.png" alt="Default Image" width="300px">
+         <input type="file" id="image-upload" accept="image/*" style="display: none;">
+       </div>
+      </div>
+   </div>      
+
+    
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script>
+//       // Initialize Quill editor
+// var quill = new Quill('#editor-container', {
+//   theme: 'snow',  // Choose 'snow' or 'bubble' themes
+//   placeholder: 'Compose an epic...',
+//   modules: {
+//     toolbar: [
+//       [{ 'header': [1, 2, false] }],
+//       ['bold', 'italic', 'underline'],
+//       ['link', 'blockquote', 'code-block'],
+//       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+//       [{ 'script': 'sub'}, { 'script': 'super' }],
+//       ['clean']  // Clear formatting
+//     ]
+//   }
+// });
+
+    </script>
+
+
+<script type="module">
+    // import { gebi } from './utils.js'
+    // import { supabase, user, signOut, checkUser } from './supabase-utils.js'
+
+    // // checks for valid session
+    // checkUser();
+
+
+
+  // // Fetch content from Supabase
+  //   async function fetchContent() {
+  //       const { data, error } = await supabase
+  //           .from('content')
+  //           .select('*')
+  //          // .single(); // Assuming there's only one row
+
+  //       if (error) {
+  //           console.error('Error fetching contentx99:', error.message);
+  //       } else {
+  //           document.getElementById('title').innerText = data.title;
+  //           document.getElementById('description').innerText = data.description;
+  //           document.getElementById('image').src = data.image_url;
+  //       }
+  //   }
+
+  
+//  // Fetch content from Supabase V2
+//   async function getContentx() {
+//     // Fetch the data from Supabase
+//     let { data: contentx, error } = await supabase
+//         .from('content')
+//         .select('*')
+//         .single(); // Assuming there's only one row of content
+
+//     if (error) {
+//         console.error('Error fetching content:', error);
+//         return;
+//     }
+
+//     // Update the HTML elements with the fetched data
+//     document.getElementById('title').innerText = contentx.title;
+    
+//    // document.getElementById('description').innerText = contentx.description;
+//     document.getElementById('description').innerHTML = contentx.description;
+// //  quill.root.innerHTML = contentx.description;  // Optional: for pre-filling the editor
+    
+//     document.getElementById('image').src = contentx.image_url;
+// }
+
+// // Call the function to fetch and display the content
+// getContentx();
+
+
+// // Function to check if user is logged in
+// async function checkAuthentication() {
+//     const { data: { user }, error } = await supabase.auth.getUser(); // Correct method for Supabase v2
+
+//     if (error) {
+//         console.error('Error fetching authenticated user:', error);
+//         return;
+//     }
+
+//     if (user) {
+//         console.log('User is logged in:', user.email);
+//         enableEditing(); // Call to enable editing for authenticated users
+//         await getContentx(true); // Pass true for authenticated users
+//     } else {
+//         console.log('No user logged in. Editing disabled.');
+//         disableEditing(); // Call to disable editing for non-authenticated users
+//         await getContentx(false); // Pass false for non-authenticated users
+//     }
+// }
+// checkAuthentication();
+
+
+// // Function to check if user is logged in
+// async function checkAuthentication() {
+//     const { data: { user }, error } = await supabase.auth.getUser(); // Correct method for Supabase v2
+
+//     if (error) {
+//         console.error('Error fetching authenticated user:', error);
+//         return;
+//     }
+
+//     if (user) {
+//         console.log('User is logged in:', user.email);
+//         enableEditing(); // Enable editing for logged-in users
+//         await getContentx(true); // Load content with Quill.js for authenticated users
+//     } else {
+//         console.log('No user logged in. Editing disabled.');
+//         disableEditing(); // Disable editing for non-authenticated users
+//         await getContentx(false); // Load static content for non-authenticated users
+//     }
+// }
+
+// // Function to load content based on user authentication
+// async function getContentx(isAuthenticated) {
+//     let { data: contentx, error } = await supabase
+//         .from('content')
+//         .select('*')
+//         .single(); // Assuming there's only one row of content
+
+//     if (error) {
+//         console.error('Error fetching content:', error);
+//         return;
+//     }
+
+//     if (isAuthenticated) {
+//         // Initialize Quill.js for the description field for authenticated users
+//         quill = new Quill('#editor-container', {
+//             theme: 'snow',
+//             placeholder: 'Edit the description...',
+//             modules: {
+//                 toolbar: [
+//                     [{ 'header': [1, 2, 3, false] }],
+//                     ['bold', 'italic', 'underline'],
+//                     ['image', 'link', 'blockquote'],
+//                     [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+//                     ['clean']
+//                 ]
+//             }
+//         });
+        
+//         // Load the content into the Quill editor and other elements
+//         document.getElementById('title').innerText = contentx.title;
+//         quill.root.innerHTML = contentx.description; // Use Quill editor to set content
+//         document.getElementById('image').src = contentx.image_url;
+//     } else {
+//         // For non-authenticated users, load the content directly without Quill.js
+//         document.getElementById('title').innerText = contentx.title;
+//         document.getElementById('description').innerHTML = contentx.description; // Static content display
+//         document.getElementById('image').src = contentx.image_url;
+//     }
+// }
+
+// // Call checkAuthentication to initiate the process
+// checkAuthentication();
+
+async function fetchContent() {
+    try {
+        const response = await fetch('/api/content');
+        const content = await response.json();
+
+        document.getElementById('title').innerText = content.title;
+        document.getElementById('description').innerHTML = content.description;
+        document.getElementById('image').src = content.image_url;
+    } catch (error) {
+        console.error('Error fetching content:', error);
+    }
+}
+
+fetchContent();
+
+  
+
+
+  
+// Quill.js editor instance for description (initialized only for logged-in users)
+ let quill = null;
+   // Function to enable editing
+    function enableEditing() {
+        // Make title and description content editable
+        document.getElementById('title').contentEditable = true;
+       // document.getElementById('description').contentEditable = true;
+      
+    //    // Initialize Quill.js for the description field
+    // quill = new Quill('#editor-container', {
+    //     theme: 'snow',
+    //   //  placeholder: 'Edit the description...',
+    //     modules: {
+    //         toolbar: [
+    //             [{ 'header': [1, 2, 3, false] }],
+    //             ['bold', 'italic', 'underline'],
+    //             ['image', 'link', 'blockquote'],
+    //             [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+    //             ['clean']
+    //         ]
+    //     }
+    // });
+
+      
+    //        quill.root.innerHTML = content.description; // Use Quill editor to set content
+
+        // Enable the Save button
+        document.getElementById('saveBtn').disabled = false;
+    
+     
+        // // Allow user to select an image and get default browser promt for new image upload url
+        // document.getElementById('image').addEventListener('click', () => {
+        //     const newImageUrl = prompt('Enter the new image URL:');
+        //     if (newImageUrl) {
+        //         document.getElementById('image').src = newImageUrl;
+        //     }
+        // });
+
+
+    // Trigger file input when the image is clicked
+    document.getElementById('image').addEventListener('click', () => {
+        document.getElementById('image-upload').click(); // Trigger hidden file input
+    });
+
+    // Handle local image selection and preview
+    document.getElementById('image-upload').addEventListener('change', (event) => {
+        const file = event.target.files[0]; // Get the selected file
+
+        if (file) {
+            // Show a preview of the image before uploading
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('image').src = e.target.result; // Update image preview
+            };
+            reader.readAsDataURL(file);
+
+            // Store the file object in a global variable for later use during save
+            window.selectedFile = file;
+        }
+    });
+      
+      // Show the Save button
+    document.getElementById('saveBtn').style.display = 'inline-block';
+      // Hide the Quill editor container
+        document.getElementById('description').style.display = 'none';  
+    }
+
+  // Function to disable editing for non-authenticated users
+function disableEditing() {
+    // Disable content-editable features
+    document.getElementById('title').contentEditable = false;
+   // document.getElementById('description').contentEditable = false;
+
+   // Ensure Quill.js is not initialized if user is not logged in
+    if (quill) {
+        quill.disable();  // Disable Quill.js if it's initialized
+    }
+
+    // Hide the Save button
+    document.getElementById('saveBtn').style.display = 'none';
+    // Hide the Quill editor container
+        document.getElementById('editor-container').style.display = 'none';  
+}
+
+  
+//    // Save the edited content back to Supabase
+// async function saveContent() {
+//     const updatedTitle = document.getElementById('title').innerText;
+//     const updatedDescription = quill.root.innerHTML; // Get the content from Quill editor
+
+//     // Check if a new image file has been selected
+//     let updatedImageUrl = document.getElementById('image').src;
+
+//     // If a file is selected, upload it to Supabase Storage
+//     if (window.selectedFile) {
+//         const file = window.selectedFile; // Retrieve the file stored globally
+//         const fileName = `${Date.now()}_${file.name}`; // Create a unique name for the file
+
+//         // Upload the file
+//         const { data: uploadData, error: uploadError } = await supabase.storage
+//             .from('dxcms_files') // Make sure to use your Supabase storage bucket name
+//             .upload(`public/${fileName}`, file); // Save the file in 'public' folder
+
+//         if (uploadError) {
+//             console.error('Error uploading image:', uploadError);
+//             return;
+//         }
+
+//         // Get the correct public URL using Supabase's getPublicUrl
+//         const { data: publicData, error: publicError } = supabase
+//             .storage
+//             .from('dxcms_files') // Your bucket name
+//             .getPublicUrl(`public/${fileName}`);
+
+//         if (publicError) {
+//             console.error('Error getting public URL:', publicError);
+//         } else {
+//             updatedImageUrl = publicData.publicUrl; // Use the proper public URL from Supabase
+//         }
+//     }
+
+//     // Update the content in your database or wherever necessary
+//     // Example of saving updated data back to the database:
+//     const { error: updateError } = await supabase
+//         .from('content') // Your table name
+//         .update({
+//             title: updatedTitle,
+//             description: updatedDescription,
+//             image_url: updatedImageUrl
+//         })
+//         .eq('id', 1); // Assuming you're updating row with id = 1
+
+//     if (updateError) {
+//         console.error('Error updating content:', updateError);
+//     } else {
+//         console.log('Content updated successfully!');
+//     }
+// }
+
+
+  async function saveContent() {
+    const updatedTitle = document.getElementById('title').innerText;
+    const updatedDescription = quill.root.innerHTML;
+    const updatedImageUrl = document.getElementById('image').src;
+
+    try {
+        const response = await fetch('/api/content', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                title: updatedTitle,
+                description: updatedDescription,
+                image_url: updatedImageUrl,
+            }),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            alert('Content saved successfully!');
+        } else {
+            console.error('Error saving content:', result.error);
+            alert('Error saving content: ' + result.error);
+        }
+    } catch (error) {
+        console.error('Error saving content:', error);
+    }
+}
+
+
+
+    // checks for valid session
+   // checkUser();
+  // fetchContent(); // Fetch content after successful login
+    //  enableEditing(); // Call to enable editing
+  
+/*
+    In this example, the code tries to list all of the
+    records for the clients table. You may make any
+    necessary changes to make this work for you. Do not
+    forget to update your RLS (row-level-security) to
+    allow only authenticated user to view them. By default
+    the RLS will reject all request.     
+*/ 
+
+    // let db_result = await supabase
+    // .from('content')
+    // .select('*')
+
+    // let data = db_result.data
+    // console.log( data )
+
+    // // loop through the data and add them to the table
+    // data.forEach(function(item){
+    //     let row = `
+    //         <tr id="row-${item.id}">
+    //             <td>${item.id}</td>
+    //             <td>${item.name}</td>
+    //             <td>${item.contact_person}</td>
+    //             <td>${item.address}</td>
+    //             <td>${item.email}</td>
+    //             <td><button class="btn btn-sm btn-secondary" id="edit-${item.id}">EDIT</td>
+    //         </tr>
+    //     `;
+
+    //     gebi('listing-body').innerHTML += row;
+    // });
+
+    // for signout button
+    gebi('saveBtn').addEventListener('click', function(){
+       saveContent();
+    })
+
+</script>
+
+  </body>
+</html>
