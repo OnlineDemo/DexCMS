@@ -52,7 +52,7 @@
 
 
 <script type="module">
-    // import { gebi } from './utils.js'
+    import { gebi } from './utils.js'
     // import { supabase, user, signOut, checkUser } from './supabase-utils.js'
 
     // // checks for valid session
@@ -126,68 +126,68 @@
 // checkAuthentication();
 
 
-// // Function to check if user is logged in
-// async function checkAuthentication() {
-//     const { data: { user }, error } = await supabase.auth.getUser(); // Correct method for Supabase v2
+// Function to check if user is logged in
+async function checkAuthentication() {
+    const { data: { user }, error } = await supabase.auth.getUser(); // Correct method for Supabase v2
 
-//     if (error) {
-//         console.error('Error fetching authenticated user:', error);
-//         return;
-//     }
+    if (error) {
+        console.error('Error fetching authenticated user:', error);
+        return;
+    }
 
-//     if (user) {
-//         console.log('User is logged in:', user.email);
-//         enableEditing(); // Enable editing for logged-in users
-//         await getContentx(true); // Load content with Quill.js for authenticated users
-//     } else {
-//         console.log('No user logged in. Editing disabled.');
-//         disableEditing(); // Disable editing for non-authenticated users
-//         await getContentx(false); // Load static content for non-authenticated users
-//     }
-// }
+    if (user) {
+        console.log('User is logged in:', user.email);
+        enableEditing(); // Enable editing for logged-in users
+        await getContentx(true); // Load content with Quill.js for authenticated users
+    } else {
+        console.log('No user logged in. Editing disabled.');
+        disableEditing(); // Disable editing for non-authenticated users
+        await getContentx(false); // Load static content for non-authenticated users
+    }
+}
 
-// // Function to load content based on user authentication
-// async function getContentx(isAuthenticated) {
-//     let { data: contentx, error } = await supabase
-//         .from('content')
-//         .select('*')
-//         .single(); // Assuming there's only one row of content
+// Function to load content based on user authentication
+async function getContentx(isAuthenticated) {
+    let { data: contentx, error } = await supabase
+        .from('content')
+        .select('*')
+        .single(); // Assuming there's only one row of content
 
-//     if (error) {
-//         console.error('Error fetching content:', error);
-//         return;
-//     }
+    if (error) {
+        console.error('Error fetching content:', error);
+        return;
+    }
 
-//     if (isAuthenticated) {
-//         // Initialize Quill.js for the description field for authenticated users
-//         quill = new Quill('#editor-container', {
-//             theme: 'snow',
-//             placeholder: 'Edit the description...',
-//             modules: {
-//                 toolbar: [
-//                     [{ 'header': [1, 2, 3, false] }],
-//                     ['bold', 'italic', 'underline'],
-//                     ['image', 'link', 'blockquote'],
-//                     [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-//                     ['clean']
-//                 ]
-//             }
-//         });
+    if (isAuthenticated) {
+        // Initialize Quill.js for the description field for authenticated users
+        quill = new Quill('#editor-container', {
+            theme: 'snow',
+            placeholder: 'Edit the description...',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline'],
+                    ['image', 'link', 'blockquote'],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    ['clean']
+                ]
+            }
+        });
         
-//         // Load the content into the Quill editor and other elements
-//         document.getElementById('title').innerText = contentx.title;
-//         quill.root.innerHTML = contentx.description; // Use Quill editor to set content
-//         document.getElementById('image').src = contentx.image_url;
-//     } else {
-//         // For non-authenticated users, load the content directly without Quill.js
-//         document.getElementById('title').innerText = contentx.title;
-//         document.getElementById('description').innerHTML = contentx.description; // Static content display
-//         document.getElementById('image').src = contentx.image_url;
-//     }
-// }
+        // Load the content into the Quill editor and other elements
+        document.getElementById('title').innerText = contentx.title;
+        quill.root.innerHTML = contentx.description; // Use Quill editor to set content
+        document.getElementById('image').src = contentx.image_url;
+    } else {
+        // For non-authenticated users, load the content directly without Quill.js
+        document.getElementById('title').innerText = contentx.title;
+        document.getElementById('description').innerHTML = contentx.description; // Static content display
+        document.getElementById('image').src = contentx.image_url;
+    }
+}
 
-// // Call checkAuthentication to initiate the process
-// checkAuthentication();
+// Call checkAuthentication to initiate the process
+checkAuthentication();
 
 async function fetchContent() {
     try {
@@ -216,23 +216,23 @@ fetchContent();
         document.getElementById('title').contentEditable = true;
        // document.getElementById('description').contentEditable = true;
       
-    //    // Initialize Quill.js for the description field
-    // quill = new Quill('#editor-container', {
-    //     theme: 'snow',
-    //   //  placeholder: 'Edit the description...',
-    //     modules: {
-    //         toolbar: [
-    //             [{ 'header': [1, 2, 3, false] }],
-    //             ['bold', 'italic', 'underline'],
-    //             ['image', 'link', 'blockquote'],
-    //             [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-    //             ['clean']
-    //         ]
-    //     }
-    // });
+       // Initialize Quill.js for the description field
+    quill = new Quill('#editor-container', {
+        theme: 'snow',
+      //  placeholder: 'Edit the description...',
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, 3, false] }],
+                ['bold', 'italic', 'underline'],
+                ['image', 'link', 'blockquote'],
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                ['clean']
+            ]
+        }
+    });
 
       
-    //        quill.root.innerHTML = content.description; // Use Quill editor to set content
+           quill.root.innerHTML = content.description; // Use Quill editor to set content
 
         // Enable the Save button
         document.getElementById('saveBtn').disabled = false;
