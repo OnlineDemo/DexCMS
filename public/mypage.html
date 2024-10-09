@@ -52,33 +52,65 @@
 
 
 <script type="module">
-     import { gebi } from './utils.js'
-     import { supabase, user, signOut, checkUser } from './supabase-utils.js'
+    //  import { gebi } from './utils.js'
+    //  import { supabase, user, signOut, checkUser } from './supabase-utils.js'
 
     // // checks for valid session
     // checkUser();
 
 
 
-  // Fetch content from Supabase
-    async function fetchContent() {
-       // const { data, error } = await supabase
-          let { data: contentx, error } = await supabase
+  // // Fetch content from Supabase
+  //   async function fetchContent() {
+  //      // const { data, error } = await supabase
+  //         let { data: contentx, error } = await supabase
 
-            .from('content')
-            .select('*')
-            .single(); // Assuming there's only one row
+  //           .from('content')
+  //           .select('*')
+  //           .single(); // Assuming there's only one row
 
-        if (error) {
-            console.error('Error fetching contentx99:', error.message);
-        } else {
-            document.getElementById('title').innerText = contentx.title;
-        document.getElementById('description').innerHTML = contentx.description; // Static content display
-        document.getElementById('image').src = contentx.image_url;
-        }
-    }
+  //       if (error) {
+  //           console.error('Error fetching contentx99:', error.message);
+  //       } else {
+  //           document.getElementById('title').innerText = contentx.title;
+  //       document.getElementById('description').innerHTML = contentx.description; // Static content display
+  //       document.getElementById('image').src = contentx.image_url;
+  //       }
+  //   }
   
-  fetchContent(); // Fetch content after successful login
+  // fetchContent(); // Fetch content after successful login
+
+  // Fetch content from the express backend server files
+  // Fetch content from local backend (JSON or API)
+    // Fetch content from local backend (JSON or API)
+      async function fetchContent() {
+        try {
+          const response = await fetch('/api/content', { // Ensure this is pointing to your Express backend
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error('Error fetching content');
+          }
+
+          const content = await response.json();
+
+          // Populate the HTML elements with the fetched content
+          document.getElementById('title').innerText = content.title;
+          document.getElementById('description').innerHTML = content.description;
+          document.getElementById('image').src = content.image_url;
+        } catch (error) {
+          console.error('Error fetching content:', error);
+        }
+      }
+
+      // Call fetchContent when the page loads
+      fetchContent();
+
+
 
   
 //  // Fetch content from Supabase V2
