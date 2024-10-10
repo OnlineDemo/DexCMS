@@ -135,81 +135,127 @@
 
         // Function to check if user is logged in
         async function checkAuthentication() {
-            const { data: { user }, error } = await supabase.auth.getUser(); // Correct method for Supabase v2
+            try {
+                const { data: { user }, error } = await supabase.auth.getUser();
 
-            if (error) {
-                console.error('Error fetching authenticated user:', error);
-                return;
-            }
+                // Handle any authentication-related error (including session missing)
+                if (error) {
+                    console.warn('Error fetching authenticated user:', error.message); // Change to warning and not error
+                    disableEditing(); // Default to non-editable mode when error occurs
+                    await getContentx(false); // Load static content for non-authenticated users
+                    return;
+                }
 
-            if (user) {
-                console.log('User is logged in:', user.email);
-                enableEditing(); // Enable editing for logged-in users
-                await getContentx(true); // Load content with Quill.js for authenticated users
-            } else {
-                console.log('No user logged in. Editing disabled.');
-                disableEditing(); // Disable editing for non-authenticated users
+                // If a user is authenticated, enable editing and load editable content
+                if (user) {
+                    console.log('User is logged in:', user.email);
+                    enableEditing(); // Enable editing for logged-in users
+                    await getContentx(true); // Load content with Quill.js for authenticated users
+                } else {
+                    // If no user is authenticated, load the static content
+                    console.log('No user logged in. Editing disabled.');
+                    disableEditing(); // Disable editing for non-authenticated users
+                    await getContentx(false); // Load static content for non-authenticated users
+                }
+            } catch (err) {
+                // Catch any unexpected errors and handle gracefully
+                console.error('Unexpected error during authentication check:', err);
+                disableEditing();
                 await getContentx(false); // Load static content for non-authenticated users
             }
         }
 
-        // Function to load content based on user authentication
+
+        // // Function to load content based on user authentication
+        // async function getContentx(isAuthenticated) {
+        //     let { data: contentx, error } = await supabase
+        //         .from('content')
+        //         .select('*')
+        //         .single(); // Assuming there's only one row of content
+
+        //     if (error) {
+        //         console.error('Error fetching content:', error);
+        //         return;
+        //     }
+
+        //     if (isAuthenticated) {
+        //         // Initialize Quill.js for the description field for authenticated users
+        //         quill = new Quill('#editor-container', {
+        //             theme: 'snow',
+        //             placeholder: 'Edit the description...',
+        //             modules: {
+        //                 toolbar: [
+        //                     [{ 'header': [1, 2, 3, false] }],
+        //                     ['bold', 'italic', 'underline'],
+        //                     ['image', 'link', 'blockquote'],
+        //                     [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+        //                     ['clean']
+        //                 ]
+        //             }
+        //         });
+
+        //         // Load the content into the Quill editor and other elements
+        //         document.getElementById('title').innerText = contentx.title;
+        //         quill.root.innerHTML = contentx.description; // Use Quill editor to set content
+        //         document.getElementById('image').src = contentx.image_url;
+        //     } else {
+        //         // For non-authenticated users, load the content directly without Quill.js
+        //         document.getElementById('title').innerText = contentx.title;
+        //         document.getElementById('description').innerHTML = contentx.description; // Static content display
+        //         document.getElementById('image').src = contentx.image_url;
+        //     }
+        // }
+
+        // // Call checkAuthentication to initiate the process
+        // checkAuthentication();
+
+        // Function to load content from the local backend (content.json)
+        // here getContentx is basically = fetchContent (as used in the mypage.html for simply displaying non-editable version of the mypage.html)
         async function getContentx(isAuthenticated) {
-            let { data: contentx, error } = await supabase
-                .from('content')
-                .select('*')
-                .single(); // Assuming there's only one row of content
-
-            if (error) {
-                console.error('Error fetching content:', error);
-                return;
-            }
-
-            if (isAuthenticated) {
-                // Initialize Quill.js for the description field for authenticated users
-                quill = new Quill('#editor-container', {
-                    theme: 'snow',
-                    placeholder: 'Edit the description...',
-                    modules: {
-                        toolbar: [
-                            [{ 'header': [1, 2, 3, false] }],
-                            ['bold', 'italic', 'underline'],
-                            ['image', 'link', 'blockquote'],
-                            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                            ['clean']
-                        ]
-                    }
+            try {
+                // Fetch content from the local backend API
+                const response = await fetch('/api/content', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
                 });
 
-                // Load the content into the Quill editor and other elements
-                document.getElementById('title').innerText = contentx.title;
-                quill.root.innerHTML = contentx.description; // Use Quill editor to set content
-                document.getElementById('image').src = contentx.image_url;
-            } else {
-                // For non-authenticated users, load the content directly without Quill.js
-                document.getElementById('title').innerText = contentx.title;
-                document.getElementById('description').innerHTML = contentx.description; // Static content display
-                document.getElementById('image').src = contentx.image_url;
-            }
-        }
+                const contentx = await response.json();
 
-        // Call checkAuthentication to initiate the process
-        checkAuthentication();
+                if (isAuthenticated) {
+                    // Initialize Quill.js for the description field for authenticated users
+                    quill = new Quill('#editor-container', {
+                        theme: 'snow',
+                        placeholder: 'Edit the description...',
+                        modules: {
+                            toolbar: [
+                                [{ 'header': [1, 2, 3, false] }],
+                                ['bold', 'italic', 'underline'],
+                                ['image', 'link', 'blockquote'],
+                                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                ['clean'],
+                            ],
+                        },
+                    });
 
-        async function fetchContent() {
-            try {
-                const response = await fetch('/api/content');
-                const content = await response.json();
-
-                document.getElementById('title').innerText = content.title;
-                document.getElementById('description').innerHTML = content.description;
-                document.getElementById('image').src = content.image_url;
+                    // Load the content into the Quill editor and other elements
+                    document.getElementById('title').innerText = contentx.title;
+                    quill.root.innerHTML = contentx.description; // Use Quill editor to set content
+                    document.getElementById('image').src = contentx.image_url;
+                } else {
+                    // For non-authenticated users, load the content directly without Quill.js
+                    document.getElementById('title').innerText = contentx.title;
+                    document.getElementById('description').innerHTML = contentx.description; // Static content display
+                    document.getElementById('image').src = contentx.image_url;
+                }
             } catch (error) {
                 console.error('Error fetching content:', error);
             }
         }
 
-        fetchContent();
+        // Call checkAuthentication to initiate the process
+        checkAuthentication();
 
 
 
@@ -254,27 +300,67 @@
             // });
 
 
-            // Trigger file input when the image is clicked
-            document.getElementById('image').addEventListener('click', () => {
-                document.getElementById('image-upload').click(); // Trigger hidden file input
+            // // Trigger file input when the image is clicked
+            // document.getElementById('image').addEventListener('click', () => {
+            //     document.getElementById('image-upload').click(); // Trigger hidden file input
+            // });
+
+            // // Handle local image selection and preview
+            // document.getElementById('image-upload').addEventListener('change', (event) => {
+            //     const file = event.target.files[0]; // Get the selected file
+
+            //     if (file) {
+            //         // Show a preview of the image before uploading
+            //         const reader = new FileReader();
+            //         reader.onload = (e) => {
+            //             document.getElementById('image').src = e.target.result; // Update image preview
+            //         };
+            //         reader.readAsDataURL(file);
+
+            //         // Store the file object in a global variable for later use during save
+            //         window.selectedFile = file;
+            //     }
+            // });
+
+
+            // // Trigger file input when the image is clicked
+            // Ensure the DOM is fully loaded before running the script
+            // document.addEventListener('DOMContentLoaded', function () {
+            // Make the image clickable and trigger file input
+            document.getElementById('image').addEventListener('click', function () {
+                document.getElementById('image-upload').click(); // Trigger file input when the image is clicked
             });
 
-            // Handle local image selection and preview
-            document.getElementById('image-upload').addEventListener('change', (event) => {
-                const file = event.target.files[0]; // Get the selected file
+            // Handle file selection and upload
+            document.getElementById('image-upload').addEventListener('change', async function () {
+                const file = this.files[0];
 
                 if (file) {
-                    // Show a preview of the image before uploading
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        document.getElementById('image').src = e.target.result; // Update image preview
-                    };
-                    reader.readAsDataURL(file);
+                    const formData = new FormData();
+                    formData.append('file', file);
 
-                    // Store the file object in a global variable for later use during save
-                    window.selectedFile = file;
+                    try {
+                        const response = await fetch('/api/upload', {
+                            method: 'POST',
+                            body: formData
+                        });
+
+                        const result = await response.json();
+                        if (response.ok) {
+                            document.getElementById('image').src = result.fileUrl; // Update image preview
+                            window.selectedFileUrl = result.fileUrl; // Save the file URL to submit later
+                        } else {
+                            console.error('Upload failed:', result.error);
+                        }
+                    } catch (error) {
+                        console.error('Error uploading file:', error);
+                    }
                 }
             });
+            //  });
+
+
+
 
             // Show the Save button
             document.getElementById('saveBtn').style.display = 'inline-block';
@@ -390,37 +476,41 @@
         async function saveContent() {
             const updatedTitle = document.getElementById('title').innerText;
             const updatedDescription = quill.root.innerHTML;  // Assuming you're still using Quill for rich text editing
-            let updatedImageUrl = document.getElementById('image').src; // Default to current image URL
+            // update the image URL to use the locally saved file URL 
+            const updatedImageUrl = window.selectedFileUrl || document.getElementById('image').src; // Use uploaded image URL if present
 
-            // If a new image file has been selected, upload it to Supabase
-            if (window.selectedFile) {
-                const file = window.selectedFile; // Retrieve the file stored globally
-                const fileName = `${Date.now()}_${file.name}`; // Create a unique name for the file
+            // Old logic to save image to supabase storage and fetch the url
+            // let updatedImageUrl = document.getElementById('image').src; // Default to current image URL
 
-                const { data, error } = await supabase.storage
-                    .from('dxcms_files') // Ensure to use the correct Supabase storage bucket name
-                    .upload(`public/${fileName}`, file);
+            // // If a new image file has been selected, upload it to Supabase
+            // if (window.selectedFile) {
+            //     const file = window.selectedFile; // Retrieve the file stored globally
+            //     const fileName = `${Date.now()}_${file.name}`; // Create a unique name for the file
 
-                if (error) {
-                    console.error('Error uploading image to Supabase:', error);
-                    return;
-                }
+            //     const { data, error } = await supabase.storage
+            //         .from('dxcms_files') // Ensure to use the correct Supabase storage bucket name
+            //         .upload(`public/${fileName}`, file);
 
-                // // Get the public URL of the uploaded image
-                // updatedImageUrl = `${supabase.storageUrl}/dxcms_files/public/${fileName}`;
+            //     if (error) {
+            //         console.error('Error uploading image to Supabase:', error);
+            //         return;
+            //     }
 
-                // Get the correct public URL using Supabase's getPublicUrl
-                const { data: publicData, error: publicError } = supabase
-                    .storage
-                    .from('dxcms_files') // Your bucket name
-                    .getPublicUrl(`public/${fileName}`);
+            //     // // Get the public URL of the uploaded image
+            //     // updatedImageUrl = `${supabase.storageUrl}/dxcms_files/public/${fileName}`;
 
-                if (publicError) {
-                    console.error('Error getting public URL:', publicError);
-                } else {
-                    updatedImageUrl = publicData.publicUrl; // Use the proper public URL from Supabase
-                }
-            }
+            //     // Get the correct public URL using Supabase's getPublicUrl
+            //     const { data: publicData, error: publicError } = supabase
+            //         .storage
+            //         .from('dxcms_files') // Your bucket name
+            //         .getPublicUrl(`public/${fileName}`);
+
+            //     if (publicError) {
+            //         console.error('Error getting public URL:', publicError);
+            //     } else {
+            //         updatedImageUrl = publicData.publicUrl; // Use the proper public URL from Supabase
+            //     }
+            // }
 
             // Send the updated content (title, description, image URL) to your backend
             try {
