@@ -57,7 +57,94 @@ app.get("/api/content", async (req, res) => {
   }
 });
 
-// API route for saving content
+// // Function to replace placeholders and generate static HTML (old code where the html is written directly without the template file)
+// async function generateStaticPage() {
+//   try {
+//     // Read the current content from the local JSON file
+//     const content = await fs.readJson("./data/content.json");
+
+//     // Read the mypage.html template
+//     const htmlFilePath = path.join(__dirname, "public", "mypage.html");
+//     let htmlContent = await fs.readFile(htmlFilePath, "utf8");
+
+//     // Replace placeholders with actual content
+//     htmlContent = htmlContent
+//       .replace(/<!-- TITLE_PLACEHOLDER -->/g, content.title)
+//       .replace(/<!-- DESCRIPTION_PLACEHOLDER -->/g, content.description)
+//       .replace(/<!-- IMAGE_PLACEHOLDER -->/g, content.image_url);
+
+//     // Write the updated HTML back to the file
+//     await fs.writeFile(htmlFilePath, htmlContent, "utf8");
+
+//     console.log("Static HTML page generated successfully!");
+//   } catch (error) {
+//     console.error("Error generating static HTML:", error);
+//   }
+// }
+
+// // Function to replace placeholders and generate static HTML (old code where the html is written directly with/through the template file every time the page is updated.)
+async function generateStaticPage() {
+  try {
+    // Read the current content from the local JSON file
+    const content = await fs.readJson("./data/content.json");
+
+    // Read the mypage-template.html file (which contains the placeholders)
+    const templateFilePath = path.join(
+      __dirname,
+      "public",
+      "mypage-template.html"
+    );
+    let htmlContent = await fs.readFile(templateFilePath, "utf8");
+
+    // Replace placeholders with actual content
+    htmlContent = htmlContent
+      .replace(/<!-- TITLE_PLACEHOLDER -->/g, content.title)
+      .replace(/<!-- DESCRIPTION_PLACEHOLDER -->/g, content.description)
+      .replace(/<!-- IMAGE_PLACEHOLDER -->/g, content.image_url);
+
+    // Write the updated content to mypage.html
+    const outputFilePath = path.join(__dirname, "public", "mypage.html");
+    await fs.writeFile(outputFilePath, htmlContent, "utf8");
+
+    console.log("Static HTML page generated successfully!");
+  } catch (error) {
+    console.error("Error generating static HTML:", error);
+  }
+}
+
+// // API route for saving content (old code)
+// app.put("/api/content", async (req, res) => {
+//   try {
+//     const { title, description, image_url } = req.body;
+
+//     if (!title || !description || !image_url) {
+//       return res
+//         .status(400)
+//         .json({ success: false, error: "Invalid input data" });
+//     }
+
+//     // Log the incoming data for debugging
+//     console.log("Received data:", { title, description, image_url });
+
+//     // Define the path for saving the content
+//     const contentFilePath = "./data/content.json";
+
+//     // Ensure the `data` directory exists
+//     await fs.ensureDir("./data");
+
+//     // Save the content to a JSON file
+//     const newContent = { title, description, image_url };
+//     await fs.writeJson(contentFilePath, newContent);
+
+//     // Send success response
+//     res.json({ success: true, message: "Content updated successfully" });
+//   } catch (error) {
+//     console.error("Error saving content:", error);
+//     res.status(500).json({ success: false, error: "Server error" });
+//   }
+// });
+
+// // API route for saving content (new version for ssg geneartion)
 app.put("/api/content", async (req, res) => {
   try {
     const { title, description, image_url } = req.body;
@@ -80,6 +167,9 @@ app.put("/api/content", async (req, res) => {
     // Save the content to a JSON file
     const newContent = { title, description, image_url };
     await fs.writeJson(contentFilePath, newContent);
+
+    // Call the function to generate the static HTML page
+    await generateStaticPage();
 
     // Send success response
     res.json({ success: true, message: "Content updated successfully" });
